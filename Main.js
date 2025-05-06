@@ -4,7 +4,9 @@ import Intro from './customComponents/Intro';
 import Header from './customComponents/Header';
 import Footer from './customComponents/Footer';
 import Scanner from './customComponents/Scanner';
+import ScanSuccess from './customComponents/ScanSuccess';
 import TaptoScan from './customComponents/TaptoScan';
+import Home from './customComponents/Home';
 import Loader from './customComponents/Loader';
 // import Spinner from 'react-native-spinkit';
 
@@ -12,12 +14,16 @@ import Loader from './customComponents/Loader';
 export default function Main() {
     const [screen, setScreen] = useState("home")
     const [isLoading, setIsLoading] = useState(false);
+    const [scannedUser, setScannedUser] = useState(null);
+    const [isLogin, setIslogin] = useState(false)
 
     const handleScannerStatus = (e) => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-            setScreen(e.trigger)
+            setScreen(e.trigger);
+            setScannedUser(e.firstName)
+            setIslogin(e.isLogin)
         }, 1000);
         // setScanning(true)
     }
@@ -31,13 +37,33 @@ export default function Main() {
                         <Loader/>
                     :  
                     screen === "in" ?
-                        <Scanner screen={screen}/> :
+                        <Scanner 
+                            screen={screen}
+                            onClick={(e) => handleScannerStatus(e)}
+                        /> :
                     screen === "out" ?
-                        <Scanner screen={screen}/> :
-                        <TaptoScan onTap={() => handleScannerStatus(true)}/> 
+                        <Scanner 
+                            screen={screen}
+                            onClick={(e) => handleScannerStatus(e)}
+                        /> : 
+                    screen === "timeinSuccess" ?
+                        <ScanSuccess
+                            user={scannedUser}
+                            screen={screen}
+                            onClick={(e) => handleScannerStatus(e)}
+                        /> :
+                    screen === "timeoutSuccess" ?
+                        <ScanSuccess
+                            user={scannedUser}
+                            screen={screen}
+                            onClick={(e) => handleScannerStatus(e)}
+                        /> :
+                        <Home
+                            screen={screen}
+                        />
                     }
                 <Footer
-                    onTap={(e) => handleScannerStatus(e)}
+                    onClick={(e) => handleScannerStatus(e)}
                 />
             </SafeAreaView>
     );
