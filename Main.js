@@ -20,7 +20,6 @@ export default function Main() {
     const deviceWidth = Dimensions.get("window").width;
 
     const handleScannerStatus = (e) => {
-        setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
             setScreen(e.trigger);
@@ -29,6 +28,16 @@ export default function Main() {
         }, 1000);
         // setScanning(true)
     }
+
+    const handleFooterNav = (e) => {
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false);
+            setScreen(e.trigger);
+        }, 1000);
+    }
+
+    console.log("screen", screen)
 
     return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#08312A' }}>
@@ -70,7 +79,7 @@ export default function Main() {
                         />
                     }
                 <Footer
-                    onClick={(e) => handleScannerStatus(e)}
+                    onClick={(e) => handleFooterNav(e)}
                 />
             </SafeAreaView>
     );

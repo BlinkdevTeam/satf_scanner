@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
   },
   spinner: {
     marginBottom: 20, // Example of custom margin
-    transform: [{ scale: 3 }], // Example of scaling the spinner
+    transform: [{ scale: 1 }], // Example of scaling the spinner
   },
 });

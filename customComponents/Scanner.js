@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CameraView, Camera } from 'expo-camera';
-import { StyleSheet, Text, View, Alert, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Alert, Pressable, Dimensions } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase client initialization
@@ -14,14 +14,22 @@ export default function Scanner({screen, onClick}) {
     const [scanned, setScanned] = useState(false);
     const [qrData, setQrData] = useState(null);
     const localeTimeStamped = new Date().toLocaleString()
+    const deviceWidth = Dimensions.get("window").width
 
     useEffect(() => {
+        if(deviceWidth < 400) {
+            setisFrontcam(false)
+        } else {
+            setisFrontcam(true)
+        }
+
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             console.log('Camera permission status:', status);
             setHasPermission(status === 'granted');
         })();
     }, []);
+    
 
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
