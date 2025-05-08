@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CameraView, Camera } from 'expo-camera';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Pressable } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase client initialization
@@ -10,6 +10,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function Scanner({screen, onClick}) {
     const [hasPermission, setHasPermission] = useState(null);
+    const [isFrontcam, setisFrontcam] = useState(true)
     const [scanned, setScanned] = useState(false);
     const [qrData, setQrData] = useState(null);
     const localeTimeStamped = new Date().toLocaleString()
@@ -26,52 +27,44 @@ export default function Scanner({screen, onClick}) {
         setScanned(true);
         setQrData(data);
       
-        console.log("data", data); // This is the email from the QR code
-      
-        // Step 1: Find the user in `medical_professionals` table by email
+        console.log("data", data); 
+
         const { data: user, error } = await supabase
-          .from('medical_professionals')
-          .select('*')
-          .eq('email_address', data)
-          .single();
+            .from('medical_professionals')
+            .select('*')
+            .eq('email_address', data)
+            .single();
       
+
         if (error || !user) {
-          Alert.alert("Error", "User not found or fetching failed.");
-          console.error("Fetch error:", error);
-          setScanned(false);
-          return;
+            onClick({trigger: screen === "in" ? "timeinFailed" : screen === "out" && "timeoutFailed", error: "invalidQr"});
+            console.error("error:", error);
+            setScanned(false);
+            return;
         }
       
         console.log("user", user);
       
         const currentTime = new Date().toISOString();
-      
-        // Step 2: Decide whether to update time_in or time_out
-        // const updateField = user.time_in && !user.time_out ? 'time_out' : 'time_in';
-
         const updateField = screen
-      
-        // Step 3: Create the update object time_in: timeStamped, formatted_timein: localeTimeStamped
         const updateData = updateField === 'in' ? { time_in: currentTime,  formatted_timein: localeTimeStamped } : { time_out: currentTime,  formatted_timeout: localeTimeStamped };
-      
-        // Step 4: Update the user's time
         const { error: updateError } = await supabase
-          .from('medical_professionals')
-          .update(updateData)
-          .eq('email_address', data);
+            .from('medical_professionals')
+            .update(updateData)
+            .eq('email_address', data);
       
         if (updateError) {
-          Alert.alert("Error", "Failed to update time.");
-          console.error("Update error:", updateError);
+            onClick({trigger: screen === "in" ? "timeinFailed" : screen === "out" && "timeoutFailed", error: "failedLogin"});
+            console.error("Update error:", updateError);
         } else {
-            //   Alert.alert("Success", `User ${updateField === 'time_in' ? 'checked in' : 'checked out'}.`);
 
             onClick({trigger: screen === "in" ? "timeinSuccess" : screen === "out" && "timeoutSuccess", firstName: user.first_name});
         }
       
         setTimeout(() => setScanned(false), 3000);
-      };
-      
+    };
+    
+    
 
     return (
         <View style={styles.container}>
@@ -79,12 +72,16 @@ export default function Scanner({screen, onClick}) {
                 style={StyleSheet.absoluteFillObject}
                 barCodeScannerSettings={{ barCodeTypes: ['qr'] }}
                 onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+                facing={isFrontcam ? "front" : null}
             />
             <View style={styles.overlay}>
                 <Text style={styles.overlayText}>
-                    {screen === "in" ? "Time in" : screen === "out" && "Time out"}
+                    {screen === "in" ? "Welcome" : screen === "out" && "Thank you"}
                 </Text>
             </View>
+            <Pressable onPress={() => setisFrontcam(!isFrontcam)} style={styles.flipOverlay}>
+                <Text style={styles.flipOverlayText}>Flip Cam</Text>
+            </Pressable>
         </View>
     );
 }
@@ -103,6 +100,18 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     overlayText: {
+        color: '#00e47c',
+        fontSize: 18,
+    },
+    flipOverlay: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+        backgroundColor: '#08312A',
+        padding: 10,
+        borderRadius: 8,
+    },
+    flipOverlayText: {
         color: '#00e47c',
         fontSize: 18,
     },

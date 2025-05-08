@@ -15,7 +15,7 @@
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
     "events": "^3.3.0",
-    "expo": "~53.0.7",
+    "expo": "~53.0.8",
     "expo-barcode-scanner": "^13.0.1",
     "expo-camera": "~16.1.6",
     "expo-status-bar": "~2.2.3",
@@ -30,7 +30,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-websocket": "^1.0.2",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "expo-updates": "~0.28.12"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

@@ -29,16 +29,10 @@ export default function ScanSuccess({ onTap, user, onClick, screen }) {
 
         // Animate first line, then second
         Animated.sequence([
-            Animated.stagger(1, sequence1),
+            Animated.stagger(50, sequence1),
             Animated.delay(20), // Small pause between lines
             Animated.stagger(50, sequence2)
-        ]).start(({ finished }) => {
-            if (finished) {
-              onClick({
-                trigger: screen === "timeinSuccess" ? "in" : screen === "timeoutSuccess" ? "out" : null,
-              });
-            }
-          });
+        ]).start();
     }, []);
 
     const renderAnimatedText = (text, animations) => (

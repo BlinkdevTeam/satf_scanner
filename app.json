@@ -20,7 +20,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.kenmirwell.biqrscanner"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,6 +40,17 @@
           "cameraPermission": "Allow the app to access your camera."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d9188980-82a2-4f5f-bba2-6f3f0899ebfa"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d9188980-82a2-4f5f-bba2-6f3f0899ebfa"
+    }
   }
 }

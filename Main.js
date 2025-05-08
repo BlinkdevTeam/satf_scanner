@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions } from 'react-native';
 import Intro from './customComponents/Intro';
 import Header from './customComponents/Header';
 import Footer from './customComponents/Footer';
@@ -8,6 +8,7 @@ import ScanSuccess from './customComponents/ScanSuccess';
 import TaptoScan from './customComponents/TaptoScan';
 import Home from './customComponents/Home';
 import Loader from './customComponents/Loader';
+import ScanFailed from './customComponents/ScanFailed';
 // import Spinner from 'react-native-spinkit';
 
 
@@ -15,7 +16,8 @@ export default function Main() {
     const [screen, setScreen] = useState("home")
     const [isLoading, setIsLoading] = useState(false);
     const [scannedUser, setScannedUser] = useState(null);
-    const [isLogin, setIslogin] = useState(false)
+    const [isLogin, setIslogin] = useState(false);
+    const deviceWidth = Dimensions.get("window").width;
 
     const handleScannerStatus = (e) => {
         setIsLoading(true);
@@ -31,7 +33,7 @@ export default function Main() {
     return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#08312A' }}>
                 <StatusBar style="light" />
-                <Header/>
+                <Header screen={screen}/>
                 {
                     isLoading ? 
                         <Loader/>
@@ -55,6 +57,11 @@ export default function Main() {
                     screen === "timeoutSuccess" ?
                         <ScanSuccess
                             user={scannedUser}
+                            screen={screen}
+                            onClick={(e) => handleScannerStatus(e)}
+                        /> :
+                    screen === "timeinFailed" ?
+                        <ScanFailed
                             screen={screen}
                             onClick={(e) => handleScannerStatus(e)}
                         /> :
