@@ -48,6 +48,7 @@ export default function MobileComponent() {
             case "timeoutSuccess":
                 return <ScanSuccess user={scannedUser} screen={screen} onClick={handleScannerStatus} />;
             case "timeinFailed":
+            case "timeoutFailed":
                 return <ScanFailed screen={screen} onClick={handleScannerStatus} />;
             default:
                 return <MobileHome 

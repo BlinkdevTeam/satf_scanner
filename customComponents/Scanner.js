@@ -28,7 +28,7 @@ export default function Scanner({ screen, onClick }) {
 
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
-            console.log('Camera permission status:', status);
+
             setHasPermission(status === 'granted');
         })();
     }, []);
@@ -52,8 +52,8 @@ export default function Scanner({ screen, onClick }) {
 
         const currentTime = new Date().toISOString();
         const updateData = screen === 'in'
-            ? { time_in: currentTime, formatted_timein: localeTimeStamped }
-            : { time_out: currentTime, formatted_timeout: localeTimeStamped };
+            ? { time_in: currentTime, formatted_timein: localeTimeStamped, latest_time: currentTime}
+            : { time_out: currentTime, formatted_timeout: localeTimeStamped, latest_time: currentTime};
 
         const { error: updateError } = await supabase
             .from('medical_professionals')

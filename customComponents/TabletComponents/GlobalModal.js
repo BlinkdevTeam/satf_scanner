@@ -25,8 +25,8 @@ export default function GlobalModal({screen, isLandscape, modalStatus, onPress, 
             const { data, error } = await supabase
                 .from('medical_professionals')
                 .select('*')
-                .not('time_in', 'is', null) // exclude rows where time_in is null
-                .order('time_in', { ascending: false })
+                .not('latest_time', 'is', null) // exclude rows where time_in is null
+                .order('latest_time', { ascending: false })
                 .limit(limit);
             
             if (error || !data) {
