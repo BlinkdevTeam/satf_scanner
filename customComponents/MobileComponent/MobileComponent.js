@@ -14,18 +14,19 @@ export default function MobileComponent() {
     const [screen, setScreen] = useState("home");
     const [isLoading, setIsLoading] = useState(false);
     const [scannedUser, setScannedUser] = useState(null);
-    const [isLogin, setIslogin] = useState(false);
     const { width, height } = useWindowDimensions();
-    const isLandscape = width > height;
     const isTablet = Math.min(width, height) >= 600;
-    const deviceWidth = Dimensions.get("window").width
+    // const [isLogin, setIslogin] = useState(false);
+    // const isLandscape = width > height;
+    // const deviceWidth = Dimensions.get("window").width
 
     const handleScannerStatus = (e) => {
         // setTimeout(() => {
+            console.log("eeee", e)
             setIsLoading(false);
             setScreen(e.trigger);
             setScannedUser(e.firstName);
-            setIslogin(e.isLogin);
+            // setIslogin(e.isLogin);
         // }, 1000);
     };
 

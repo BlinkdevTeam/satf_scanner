@@ -21,13 +21,14 @@ export default function TabletComponent() {
     const { width, height } = useWindowDimensions();
     const isLandscape = width > height;
     const isTablet = Math.min(width, height) >= 600;
+    // const [isLogin, setIslogin] = useState(false);
 
     const handleScannerStatus = (e) => {
         // setTimeout(() => {
             setIsLoading(false);
             setScreen(e.trigger);
             setScannedUser(e.firstName);
-            setIslogin(e.isLogin);
+            // setIslogin(e.isLogin);
         // }, 1000);
     };
 
@@ -45,7 +46,7 @@ export default function TabletComponent() {
         switch (screen) {
             case "in":
             case "out":
-                return <Scanner screen={screen} onClick={handleScannerStatus} isLandscape={isLandscape}/>;
+                return <Scanner screen={screen} onClick={handleScannerStatus}/>;
             case "timeinSuccess":
             case "timeoutSuccess":
                 return <ScanSuccess user={scannedUser} screen={screen} onClick={handleScannerStatus} />;

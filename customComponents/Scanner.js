@@ -9,10 +9,11 @@ const supabaseUrl = 'https://shvutlcgljqiidqxqrru.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodnV0bGNnbGpxaWlkcXhxcnJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MTM2NDgsImV4cCI6MjA2MTQ4OTY0OH0.UXJKk6iIyaVJsohEB6CwwauC21YPez1xwsOFy9qa34Q'; // Make sure to use the correct key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default function Scanner({ screen, onClick, isLandscape }) {
+export default function Scanner({ screen, onClick }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [isFrontcam, setIsFrontcam] = useState(true);
     const [scanned, setScanned] = useState(false);
+    // const [qrData, setQrData] = useState('');
     const localeTimeStamped = new Date().toLocaleString();
     const deviceWidth = Dimensions.get("window").width;
     const { width, height } = useWindowDimensions();
@@ -34,7 +35,7 @@ export default function Scanner({ screen, onClick, isLandscape }) {
 
     const handleBarCodeScanned = async ({ type, data }) => {
         setScanned(true);
-        setQrData(data);
+        // setQrData(data);
         console.log("Scanned QR data:", data);
 
         const { data: user, error } = await supabase
@@ -96,7 +97,7 @@ export default function Scanner({ screen, onClick, isLandscape }) {
         <View style={styles.container}>
             <CameraView
                 style={StyleSheet.absoluteFillObject}
-                barCodeScannerSettings={{ barCodeTypes: ['qr'] }}
+                barCodeScannerSettings={{ barcodeTypes: ['qr'] }}
                 onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
                 facing={isFrontcam ? "front" : "back"}
             />
