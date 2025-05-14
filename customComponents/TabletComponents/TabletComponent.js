@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, Dimensions, useWindowDimensions, Pressable } from 'react-native';
-import Header from '../Header';
 import Footer from '../Footer';
 import Scanner from '../Scanner';
 import ScanSuccess from '../ScanSuccess';

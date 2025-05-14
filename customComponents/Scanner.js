@@ -105,16 +105,17 @@ export default function Scanner({ screen, onClick }) {
                 style={[
                     styles.overlay,
                     {
-                        bottom: isTablet ? 183 : 80 ,
-                        right: isTablet ? 55 : 10 ,
+                        top: isTablet ? 20 : 20 ,
+                        right: isTablet ? 20 : 10 ,
                         padding: isTablet ? 17 : 10 ,
+                        // backgroundColor: isTablet ? '#08312A' : "",
                     }
                 ]}>
                 <View style={styles.overlayContent}>
                     {
                         screen === "in" ?
-                        <MaterialCommunityIcons name="login" size={24} color="#ffffff"/> :
-                        <MaterialCommunityIcons name="logout" size={24} color="#ffffff"/>
+                        <MaterialCommunityIcons name="clock-in" size={50} color="#ffffff"/> :
+                        <MaterialCommunityIcons name="clock-out" size={50} color="#ffffff"/>
                     }
                 </View>
             </View>
@@ -141,12 +142,11 @@ const styles = StyleSheet.create({
     overlay: {
         position: 'absolute',
         alignSelf: 'left',
-        backgroundColor: '#08312A',
         borderRadius: 8,
     },
     overlayContent: {
         flexDirection: 'row',
-        gap: 10
+        gap: 10,
     },  
     overlayText: {
         // color: '#00e47c',
