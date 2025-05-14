@@ -4,15 +4,12 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Scanner from '../Scanner';
 import ScanSuccess from '../ScanSuccess';
-import Home from '../Home';
 import Loader from '../Loader';
 import ScanFailed from '../ScanFailed';
 import LandscapeTHeader from './Landscape/LandscapeTHeader';
 import PortraitTHeader from './Portrait/PortraitTHeader';
-import PortraitTHome from './Portrait/PortraitTHome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import SideModal from '../SideModal';
-import TabletHome from './TabletHome';
+import GlobalModal from './GlobalModal';
 // import Spinner from 'react-native-spinkit';
 
 
@@ -20,14 +17,10 @@ export default function TabletComponent() {
     const [screen, setScreen] = useState("home");
     const [isLoading, setIsLoading] = useState(false);
     const [scannedUser, setScannedUser] = useState(null);
-    const [isLogin, setIslogin] = useState(false);
     const [modalStatus, setModalStatus] = useState(false)
     const { width, height } = useWindowDimensions();
     const isLandscape = width > height;
     const isTablet = Math.min(width, height) >= 600;
-    const deviceWidth = Dimensions.get("window").width
-
-    console.log( 'isLandscape-:', isLandscape )
 
     const handleScannerStatus = (e) => {
         // setTimeout(() => {
@@ -43,6 +36,7 @@ export default function TabletComponent() {
         setTimeout(() => {
             setIsLoading(false);
             setScreen(e.trigger);
+            setModalStatus(!modalStatus);
         }, 1000);
     };
 
@@ -51,19 +45,14 @@ export default function TabletComponent() {
         switch (screen) {
             case "in":
             case "out":
-                return <Scanner screen={screen} onClick={handleScannerStatus} />;
+                return <Scanner screen={screen} onClick={handleScannerStatus} isLandscape={isLandscape}/>;
             case "timeinSuccess":
             case "timeoutSuccess":
                 return <ScanSuccess user={scannedUser} screen={screen} onClick={handleScannerStatus} />;
             case "timeinFailed":
                 return <ScanFailed screen={screen} onClick={handleScannerStatus} />;
             default:
-                return <TabletHome
-                            screen={screen} 
-                            isTablet={isTablet}
-                            modalStatus={modalStatus}
-                            onPress={() => setModalStatus(!modalStatus)}
-                    />;
+                return <></>
         }
     };
 
@@ -101,8 +90,15 @@ export default function TabletComponent() {
             renderPortraitHeader()
         )}
         {renderContent()}
+        <GlobalModal
+            screen={screen} 
+            isTablet={isTablet}
+            modalStatus={modalStatus}
+            onPress={() => setModalStatus(!modalStatus)}
+            onClick={(e) => handleFooterNav(e)}
+        />
         {
-            screen === "home" &&
+            
             <Pressable 
                 style={{
                     zIndex: 9,
@@ -120,7 +116,7 @@ export default function TabletComponent() {
                 <MaterialCommunityIcons name="account-search" size={24} color="#ffffff" />
             </Pressable>
         }
-        <Footer onClick={handleFooterNav} />
+        <View style={{width: "100%", height: 80}}></View>
     </>
 );
 }

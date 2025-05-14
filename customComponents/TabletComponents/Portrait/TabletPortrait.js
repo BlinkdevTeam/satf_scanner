@@ -4,8 +4,6 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Scanner from '../Scanner';
 import ScanSuccess from '../ScanSuccess';
-import Home from '../../Home';
-import PortraitTHome from './PortraitTHome';
 import Loader from '../Loader';
 import ScanFailed from '../ScanFailed';
 import TabletHeader from '../../Header/TabletHeader';
@@ -51,10 +49,7 @@ export default function TabletPortrait() {
             case "timeinFailed":
                 return <ScanFailed screen={screen} onClick={handleScannerStatus} />;
             default:
-                return <PortraitTHome
-                        screen={screen} 
-                        isTablet={isTablet}
-                    />;
+                return <></>
         }
     };
 

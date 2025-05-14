@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CameraView, Camera } from 'expo-camera';
-import { StyleSheet, Text, View, Alert, Pressable, Dimensions, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Alert, Pressable, Dimensions, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -9,13 +9,14 @@ const supabaseUrl = 'https://shvutlcgljqiidqxqrru.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodnV0bGNnbGpxaWlkcXhxcnJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MTM2NDgsImV4cCI6MjA2MTQ4OTY0OH0.UXJKk6iIyaVJsohEB6CwwauC21YPez1xwsOFy9qa34Q'; // Make sure to use the correct key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default function Scanner({ screen, onClick }) {
+export default function Scanner({ screen, onClick, isLandscape }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [isFrontcam, setIsFrontcam] = useState(true);
     const [scanned, setScanned] = useState(false);
-    const [qrData, setQrData] = useState(null);
     const localeTimeStamped = new Date().toLocaleString();
     const deviceWidth = Dimensions.get("window").width;
+    const { width, height } = useWindowDimensions();
+    const isTablet = Math.min(width, height) >= 600;
 
     useEffect(() => {
         if (deviceWidth < 400) {
@@ -99,11 +100,16 @@ export default function Scanner({ screen, onClick }) {
                 onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
                 facing={isFrontcam ? "front" : "back"}
             />
-            <View style={styles.overlay}>
+            <View 
+                style={[
+                    styles.overlay,
+                    {
+                        bottom: isTablet ? 183 : 80 ,
+                        right: isTablet ? 55 : 10 ,
+                        padding: isTablet ? 17 : 10 ,
+                    }
+                ]}>
                 <View style={styles.overlayContent}>
-                    <Text style={styles.overlayText}>
-                        {screen === "in" ? "In" : "Out"}
-                    </Text>
                     {
                         screen === "in" ?
                         <MaterialCommunityIcons name="login" size={24} color="#ffffff"/> :
@@ -111,8 +117,16 @@ export default function Scanner({ screen, onClick }) {
                     }
                 </View>
             </View>
-            <Pressable onPress={() => setIsFrontcam(!isFrontcam)} style={styles.flipOverlay}>
-                <Text style={styles.flipOverlayText}>Flip Cam</Text>
+            <Pressable 
+                onPress={() => setIsFrontcam(!isFrontcam)} 
+                style={[
+                    styles.flipOverlay, 
+                    {
+                        bottom: isTablet ? 110 : 70 ,
+                        right: isTablet ? 50 : 10 ,
+                    }
+                ]}>
+                <MaterialCommunityIcons name="camera-flip-outline" size={24} color="#ffffff"/>
             </Pressable>
         </View>
     );
@@ -125,11 +139,8 @@ const styles = StyleSheet.create({
     },
     overlay: {
         position: 'absolute',
-        bottom: 10,
         alignSelf: 'left',
-        left: 10,
         backgroundColor: '#08312A',
-        padding: 10,
         borderRadius: 8,
     },
     overlayContent: {
@@ -143,11 +154,9 @@ const styles = StyleSheet.create({
     },
     flipOverlay: {
         position: 'absolute',
-        bottom: 10,
-        right: 10,
         backgroundColor: '#08312A',
-        padding: 10,
-        borderRadius: 8,
+        padding: 20,
+        borderRadius: 100,
     },
     flipOverlayText: {
         color: '#00e47c',

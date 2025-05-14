@@ -4,7 +4,6 @@ import Header from '../Header';
 import Footer from '../Footer';
 import Scanner from '../Scanner';
 import ScanSuccess from '../ScanSuccess';
-import Home from '../../Home';
 import Loader from '../Loader';
 import ScanFailed from '../ScanFailed';
 import TabletHeader from '../../Header/TabletHeader';
@@ -50,10 +49,7 @@ export default function TabletLandscape() {
             case "timeinFailed":
                 return <ScanFailed screen={screen} onClick={handleScannerStatus} />;
             default:
-                return <Home 
-                        screen={screen} 
-                        isTablet={isTablet}
-                    />;
+                return <></>
         }
     };
 
