@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, Dimensions, useWindowDimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { DataTable } from 'react-native-paper';
+import { StyleSheet, Text, View, Image, TextInput, Dimensions, useWindowDimensions, KeyboardAvoidingView, ScrollView, Modal, Pressable } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
-import { Pressable } from 'react-native';
-import MobileBodyContainer from './home-components/mobile/BodyContainer';
-import TabletBodyContainer from './home-components/tablet/BodyContainer';
+import HomeTemplate from './HomeTemplate';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+// import SideModal from '../../SideModal';
+
 
 // Supabase client initialization
 const supabaseUrl = 'https://shvutlcgljqiidqxqrru.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodnV0bGNnbGpxaWlkcXhxcnJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MTM2NDgsImV4cCI6MjA2MTQ4OTY0OH0.UXJKk6iIyaVJsohEB6CwwauC21YPez1xwsOFy9qa34Q'; // Make sure to use the correct key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default function Home({screen, isLandscape}) {
+export default function TabletHome({screen, isLandscape, modalStatus, onPress}) {
     const [participants, setParticipants] = useState(null);
     const [selectedRow, setSelectedrow] = useState([])
-    const textColor = '#00e47c';
     const [searchTerm, setSearchTerm] = useState('');
-    const [hasSearched, setHasSearched] = useState(false);
     const deviceWidth = Dimensions.get("window").width
     const limit = deviceWidth < 400 ? 10 : 20
     const { width, height } = useWindowDimensions();
@@ -84,37 +82,39 @@ export default function Home({screen, isLandscape}) {
         search();
       }, [debouncedSearchTerm]);
       
-
     
 
-    return width < 400 ? (
+    return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView style={styles.container} behavior='position'>
-          <MobileBodyContainer
-              setSearchTerm={e => setSearchTerm(e)}
-              searchTerm={searchTerm}
-              selectedRow={selectedRow}
-              participants={participants}
-              handleSelectuserrow={i => handleSelectuserrow(i)}
-              
-          />
+            <Modal transparent={true} animationType="slide" visible={modalStatus}>
+                <HomeTemplate
+                    setSearchTerm={e => setSearchTerm(e)}
+                    searchTerm={searchTerm}
+                    selectedRow={selectedRow}
+                    participants={participants}
+                    handleSelectuserrow={i => handleSelectuserrow(i)}
+                />
+                <Pressable 
+                    style={{
+                        zIndex: 9,
+                        position: 'absolute',
+                        bottom: 100,
+                        right: 50,
+                        backgroundColor: "#08312A",
+                        padding: 20,
+                        borderRadius: 1000, // optional, makes it circular
+                        elevation: 5, // for Android shadow
+                        shadowColor: '#000', // for iOS shadow
+                    }} 
+                    onPress={() => onPress(!modalStatus)}
+                    >
+                    <MaterialCommunityIcons name="close" size={24} color="#ffffff" />
+                </Pressable>
+            </Modal>
         </KeyboardAvoidingView>
       </ScrollView>
-    ) :
-    (
-      <ScrollView style={[styles.container]}>
-        <KeyboardAvoidingView style={styles.container} behavior='position'>
-          <TabletBodyContainer
-              setSearchTerm={e => setSearchTerm(e)}
-              searchTerm={searchTerm}
-              selectedRow={selectedRow}
-              participants={participants}
-              handleSelectuserrow={i => handleSelectuserrow(i)}
-              orrientationWidth={width}
-          />
-        </KeyboardAvoidingView>
-      </ScrollView>
-    )
+    ) 
 }
 
 const styles = StyleSheet.create({

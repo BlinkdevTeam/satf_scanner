@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 20,
         paddingRight: 20,
-        margin: "auto"
+        margin: "auto",
+        width: '80%'
     },
     searchInput: {
         backgroundColor: '#222',

@@ -28,10 +28,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingBottom: 20,
         paddingTop: 20,
-        paddingRight: 40,
-        paddingLeft: 40,
-        width: '100%',
+        paddingHorizontal: 40,
         justifyContent: "space-between",
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0, // ensures it stretches fully
+        zIndex: 1000 // ensures it stays on top
     },
     buttonText: {
         fontSize: 11

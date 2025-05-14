@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, Dimensions, useWindowDimensions, KeyboardAvoidingView, ScrollView } from 'react-native';
-import { DataTable } from 'react-native-paper';
 import { createClient } from '@supabase/supabase-js';
-import { Pressable } from 'react-native';
-import MobileBodyContainer from './home-components/mobile/BodyContainer';
-import TabletBodyContainer from './home-components/tablet/BodyContainer';
+import HomeTemplate from './HomeTemplate';
+
 
 // Supabase client initialization
 const supabaseUrl = 'https://shvutlcgljqiidqxqrru.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNodnV0bGNnbGpxaWlkcXhxcnJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5MTM2NDgsImV4cCI6MjA2MTQ4OTY0OH0.UXJKk6iIyaVJsohEB6CwwauC21YPez1xwsOFy9qa34Q'; // Make sure to use the correct key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export default function Home({screen, isLandscape}) {
+export default function MobileHome({screen, isLandscape}) {
     const [participants, setParticipants] = useState(null);
     const [selectedRow, setSelectedrow] = useState([])
-    const textColor = '#00e47c';
     const [searchTerm, setSearchTerm] = useState('');
-    const [hasSearched, setHasSearched] = useState(false);
     const deviceWidth = Dimensions.get("window").width
     const limit = deviceWidth < 400 ? 10 : 20
     const { width, height } = useWindowDimensions();
@@ -84,37 +80,21 @@ export default function Home({screen, isLandscape}) {
         search();
       }, [debouncedSearchTerm]);
       
-
     
 
-    return width < 400 ? (
+    return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView style={styles.container} behavior='position'>
-          <MobileBodyContainer
+          <HomeTemplate
               setSearchTerm={e => setSearchTerm(e)}
               searchTerm={searchTerm}
               selectedRow={selectedRow}
               participants={participants}
               handleSelectuserrow={i => handleSelectuserrow(i)}
-              
           />
         </KeyboardAvoidingView>
       </ScrollView>
-    ) :
-    (
-      <ScrollView style={[styles.container]}>
-        <KeyboardAvoidingView style={styles.container} behavior='position'>
-          <TabletBodyContainer
-              setSearchTerm={e => setSearchTerm(e)}
-              searchTerm={searchTerm}
-              selectedRow={selectedRow}
-              participants={participants}
-              handleSelectuserrow={i => handleSelectuserrow(i)}
-              orrientationWidth={width}
-          />
-        </KeyboardAvoidingView>
-      </ScrollView>
-    )
+    ) 
 }
 
 const styles = StyleSheet.create({
