@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         borderColor: '#00e47c',
         borderWidth: 1,
-        fontSize: 28,
+        fontSize: 16,
         width: '100%',
     },
     resultsContainer: {

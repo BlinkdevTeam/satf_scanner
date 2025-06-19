@@ -39,9 +39,9 @@ export default function Scanner({ screen, onClick }) {
         console.log("Scanned QR data:", data);
 
         const { data: user, error } = await supabase
-            .from('medical_professionals')
+            .from('sat_forum_registrations')
             .select('*')
-            .eq('email_address', data)
+            .eq('email', data)
             .single();
 
         if (error || !user) {
@@ -56,9 +56,9 @@ export default function Scanner({ screen, onClick }) {
             : { time_out: currentTime, formatted_timeout: localeTimeStamped, latest_time: currentTime};
 
         const { error: updateError } = await supabase
-            .from('medical_professionals')
+            .from('sat_forum_registrations')
             .update(updateData)
-            .eq('email_address', data);
+            .eq('email', data);
 
         if (updateError) {
             onClick({ trigger: screen === "in" ? "timeinFailed" : "timeoutFailed", error: "failedLogin" });

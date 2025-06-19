@@ -23,7 +23,7 @@ export default function GlobalModal({screen, isLandscape, modalStatus, onPress, 
         (async () => {
 
             const { data, error } = await supabase
-                .from('medical_professionals')
+                .from('sat_forum_registrations')
                 .select('*')
                 .not('latest_time', 'is', null) // exclude rows where time_in is null
                 .order('latest_time', { ascending: false })
@@ -66,10 +66,10 @@ export default function GlobalModal({screen, isLandscape, modalStatus, onPress, 
           }
       
           const { data, error } = await supabase
-            .from('medical_professionals')
+            .from('sat_forum_registrations')
             .select('*')
             .or(
-              `first_name.ilike.%${debouncedSearchTerm}%,middle_name.ilike.%${debouncedSearchTerm}%,last_name.ilike.%${debouncedSearchTerm}%,email_address.ilike.%${debouncedSearchTerm}%`
+              `first_name.ilike.%${debouncedSearchTerm}%,last_name.ilike.%${debouncedSearchTerm}%,email_address.ilike.%${debouncedSearchTerm}%`
             );
       
           if (error) {

@@ -16,13 +16,10 @@ export default function SingleParticipant({ user }) {
   return (
     <View style={styles.container}>
       {renderRow('Name:', `${user.first_name} ${user.last_name}`)}
-      {renderRow('Email:', user.email_address)}
+      {renderRow('Email:', user.email)}
       {renderRow('Date Registered:', new Date(user.created_at).toLocaleDateString())}
-      {renderRow('PRC License:', user.prc_license)}
       {renderRow('Time In:', formatTime(user.time_in))}
       {renderRow('Time Out:', formatTime(user.time_out))}
-      {renderRow('Clinic:', user.clinic)}
-      {renderRow('Address:', user.address)}
     </View>
   );
 }
