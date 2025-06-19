@@ -39,7 +39,8 @@
         {
           "cameraPermission": "Allow the app to access your camera."
         }
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {

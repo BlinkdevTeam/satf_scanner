@@ -84,41 +84,40 @@ export default function TabletComponent() {
     }
 
     return (
-    <>
-        {isLandscape ? (
-            renderLanscapeHeader()
-        ) : (
-            renderPortraitHeader()
-        )}
+      <>
+        {isLandscape ? renderLanscapeHeader() : renderPortraitHeader()}
         {renderContent()}
         <GlobalModal
-            screen={screen} 
-            isTablet={isTablet}
-            modalStatus={modalStatus}
-            onPress={() => setModalStatus(!modalStatus)}
-            onClick={(e) => handleFooterNav(e)}
+          screen={screen}
+          isTablet={isTablet}
+          modalStatus={modalStatus}
+          onPress={() => setModalStatus(!modalStatus)}
+          onClick={(e) => handleFooterNav(e)}
         />
         {
-            
-            <Pressable 
-                style={{
-                    zIndex: 9,
-                    position: 'absolute',
-                    bottom: 120,
-                    right: 50,
-                    backgroundColor: "#08312A",
-                    padding: 20,
-                    borderRadius: 1000, // optional, makes it circular
-                    elevation: 5, // for Android shadow
-                    shadowColor: '#000', // for iOS shadow
-                }} 
-                onPress={() => setModalStatus(!modalStatus)}
-                >
-                <MaterialCommunityIcons name="account-search" size={24} color="#ffffff" />
-            </Pressable>
+          <Pressable
+            style={{
+              zIndex: 9,
+              position: "absolute",
+              bottom: 120,
+              right: 50,
+              backgroundColor: "#3EAD35",
+              padding: 20,
+              borderRadius: 1000, // optional, makes it circular
+              elevation: 5, // for Android shadow
+              shadowColor: "#000", // for iOS shadow
+            }}
+            onPress={() => setModalStatus(!modalStatus)}
+          >
+            <MaterialCommunityIcons
+              name="account-search"
+              size={24}
+              color="#00072C"
+            />
+          </Pressable>
         }
-        <View style={{width: "100%", height: 80}}></View>
-    </>
-);
+        <View style={{ width: "100%", height: 80 }}></View>
+      </>
+    );
 }
 
