@@ -25,8 +25,8 @@ export default function SingleParticipant({ user }) {
         "Date Registered:",
         new Date(user.created_at).toLocaleDateString()
       )}
-      {renderRow("Time In:", formatTime(user.time_in))}
-      {renderRow("Time Out:", formatTime(user.time_out))}
+      {renderRow("Time In:", formatTime(user.formatted_timein))}
+      {renderRow("Time Out:", formatTime(user.formatted_timeout))}
     </View>
   );
 }
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-start",
     gap: 8,
+    backgroundColor: "#dddddd",
   },
   infoBlock: {
     flexDirection: "column",
