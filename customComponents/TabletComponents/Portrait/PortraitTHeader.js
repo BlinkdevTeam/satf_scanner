@@ -1,81 +1,78 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import logo from '../../../assets/bi_logo.png';
-import eventLogo from '../../../assets/event_logo.png';
-import biDog from '../../../assets/dogBI.png';
+import { StyleSheet, Text, View, Image } from "react-native";
+import ICONLOGO from "../../../assets/SATF_LOGO.png";
+import LOGO from "../../../assets/SATF_LOGO_2.png";
 
-
-export default function PortraitTHeader({screen}) {
-  const deviceWidth = Dimensions.get("window").width
-
-  return  (
-    <View style={[
-      styles.container,
-      {
-        paddingTop: screen === "home" ? 150 : 20,
-        paddingBottom: 20,
-      }
-    ]}>
-      <View
-        style={{
-          flexDirection: screen === 'home' ? 'column' : 'row',
-          justifyContent: screen === 'home' ? 'space-between' : 'center',
-          width: screen === 'home' ? '100%' : '80%',
-          alignItems: 'center',
-          paddingTop: screen === 'home' ? 0 : 30,
-          paddingBottom: screen === 'home' ? 0 : 10,
-        }}
-      >
-        <Image 
-          source={logo} 
-          style={[styles.imageStyle, 
-            {
-              width: "90%", 
-              height: screen === "home" ? 50 : 40
-            }
-          ]} 
+export default function PortraitTHeader({ screen }) {
+  return (
+    <View style={[styles.container, screen === "home" && styles.homePadding]}>
+      <View style={styles.contentWrapper}>
+        <Image
+          source={LOGO}
+          style={[styles.imageStyle, { height: screen === "home" ? 100 : 40 }]}
         />
-        <Image 
-          source={eventLogo} 
-          style={[styles.imageStyle, 
-            {
-              width: "90%", 
-              height: screen === "home" ? 300 : 40
-            }
-          ]} 
-        />
-         {
-          screen === "home" &&
-          <>
-            <View style={{paddingTop: 50, paddingBottom: 50, alignItems: 'left', gap: 20, width: '70%'}}>
-              <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '900',}}>Join us for a day of insightful discussions and</Text>
-              <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '900',}}>updates in companion animal health — May 28,</Text>
-              <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '900',}}>2025 at Crimson Hotel, Alabang, Muntinlupa City.</Text>
-              <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '900',}}>Secure your spot today!</Text>
+        <Text
+          style={{
+            fontFamily: "MonosansSemiBoldItalic",
+            fontSize: 30,
+            marginTop: 50,
+            color: "#fff",
+          }}
+        >
+          Shaping the Future of Livestock Innovation.
+        </Text>
+        {screen === "home" && (
+          <View style={styles.textWrapper}>
+            <Text style={[styles.monosansText, { fontSize: 22 }]}>
+              JULY 17 & 24, 2025
+            </Text>
+            <Text style={styles.monosansText}>8:00 AM - 5:00 PM</Text>
+            <Text style={[styles.monosansText, { letterSpacing: 0 }]}>
+              Crimson Hotel, Alabang, Muntinlupa City
+            </Text>
           </View>
-          <Image 
-            source={biDog} 
-            style={{
-                opacity: 0.8,
-                width: "100%",
-                height: screen === "home" ? 400 : 40
-              }} 
-          />
-          </>
-         }
+        )}
       </View>
     </View>
-  ) 
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#08312A',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    position: "relative",
+    // ✅ Do NOT add backgroundColor here
+  },
+  homePadding: {
+    paddingTop: 150,
+  },
+  contentWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "80%",
+    gap: 20,
+    backgroundColor: "transparent", // ✅ ensures background stays see-through
   },
   imageStyle: {
-    resizeMode: 'contain'
-  }
+    resizeMode: "contain",
+    width: "90%",
+  },
+  textWrapper: {
+    alignItems: "center",
+    marginTop: 50,
+    gap: 10,
+    backgroundColor: "transparent", // ✅ keeps text block transparent
+  },
+  monosansText: {
+    color: "#ffffff",
+    paddingInline: 10,
+    fontSize: 22,
+    fontWeight: "900",
+    fontFamily: "Monosans",
+    lineHeight: 24,
+    letterSpacing: 9,
+    textAlign: "center",
+  },
 });

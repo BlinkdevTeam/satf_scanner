@@ -1,54 +1,20 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import ICONLOGO from "../../../assets/SATF_LOGO.png";
 import LOGO from "../../../assets/SATF_LOGO_2.png";
-import SATFBG from "../../../assets/SATF_BG2.png";
-import { Video } from "expo-av";
-import BG_VIDEO from "../../../assets/DESKTOP.mp4"; // adjust path as needed
 
 export default function LandscapeTHeader({ screen }) {
-  const deviceWidth = Dimensions.get("window").width;
-
   return (
     <View
       style={[
         styles.container,
         {
-          height: screen === "home" ? "100%" : null,
-          paddingTop: screen === "home" ? 0 : 20,
+          height: screen === "home" ? "100%" : undefined,
+          paddingTop: screen !== "home" ? 20 : 0,
           paddingBottom: 0,
         },
       ]}
     >
-      {/* {screen === "home" && (
-        <Image
-          source={SATFBG}
-          style={{
-            opacity: 1,
-            width: "100%",
-            position: "absolute",
-            height: screen === "home" ? "100%" : 40,
-            resizeMode: "cover",
-          }}
-        />
-      )} */}
-      {screen === "home" && (
-        <Video
-          source={BG_VIDEO}
-          rate={1.0}
-          volume={1.0}
-          isMuted={true}
-          resizeMode="cover"
-          shouldPlay
-          isLooping
-          style={{
-            opacity: 1,
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            // zIndex: -1,
-          }}
-        />
-      )}
+      {/* ✅ Background is handled by parent - no local <Video> or <Image> */}
 
       <View
         style={{
@@ -56,7 +22,8 @@ export default function LandscapeTHeader({ screen }) {
           justifyContent: screen === "home" ? "space-between" : "center",
           width: screen === "home" ? "100%" : "80%",
           alignItems: "center",
-          gap: 0, // gap should be a number, not string
+          gap: 0,
+          backgroundColor: "transparent", // ✅ keep everything transparent
         }}
       >
         <Image
@@ -65,21 +32,20 @@ export default function LandscapeTHeader({ screen }) {
             styles.imageStyle,
             {
               width: "90%",
-              height: screen === "home" ? 30 : 40,
+              height: screen === "home" ? 80 : 40,
             },
           ]}
         />
-        <Image
-          source={ICONLOGO}
-          style={[
-            styles.imageStyle,
-            {
-              width: "90%",
-              height: screen === "home" ? 350 : 40,
-              marginTop: "50",
-            },
-          ]}
-        />
+        <Text
+          style={{
+            fontFamily: "MonosansSemiBoldItalic",
+            fontSize: 30,
+            marginTop: 50,
+            color: "#fff",
+          }}
+        >
+          Shaping the Future of Livestock Innovation.
+        </Text>
 
         {screen === "home" && (
           <>
@@ -100,7 +66,7 @@ export default function LandscapeTHeader({ screen }) {
                 alignItems: "center",
               }}
             >
-              {/* <Text style={styles.lifeForwardText}>Life Forward</Text> */}
+              {/* Optional text area */}
             </View>
           </>
         )}
@@ -114,16 +80,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    backgroundColor: "transparent", // ✅ important!
   },
   imageStyle: {
     resizeMode: "contain",
   },
   monosansText: {
     color: "#ffffff",
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "900",
     fontFamily: "Monosans",
     lineHeight: 24,
     letterSpacing: 9,
+    textAlign: "center",
   },
 });
