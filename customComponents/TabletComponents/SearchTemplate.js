@@ -26,6 +26,7 @@ export default function SearchTemplate(props) {
             key={`participant-${index}`}
             index={index}
             user={user}
+            onClose={() => props.setSelectedRow([])}
           />
         ))
       ) : (

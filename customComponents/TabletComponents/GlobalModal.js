@@ -31,7 +31,7 @@ export default function GlobalModal({
   onClick,
 }) {
   const [participants, setParticipants] = useState(null);
-  const [selectedRow, setSelectedrow] = useState([]);
+  const [selectedRow, setSelectedRow] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const deviceWidth = Dimensions.get("window").width;
   const limit = deviceWidth < 400 ? 10 : 20;
@@ -56,7 +56,7 @@ export default function GlobalModal({
   }, []);
 
   const handleSelectuserrow = (i) => {
-    setSelectedrow([i]);
+    setSelectedRow([i]);
   };
 
   const useDebounce = (value, delay = 300) => {
@@ -114,6 +114,23 @@ export default function GlobalModal({
     search();
   }, [debouncedSearchTerm]);
 
+  const refreshParticipants = async () => {
+    const { data, error } = await supabase
+      .from("sat_forum_registrations")
+      .select("*")
+      .not("latest_time", "is", null)
+      .order("latest_time", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error("Refresh error:", error.message);
+    } else {
+      setParticipants(data);
+      setSearchTerm(""); // optional: clear search input
+      setSelectedRow([]); // optional: clear selected user
+    }
+  };
+
   return (
     <Modal transparent={true} animationType="slide" visible={modalStatus}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -125,6 +142,7 @@ export default function GlobalModal({
             setSearchTerm={(e) => setSearchTerm(e)}
             searchTerm={searchTerm}
             selectedRow={selectedRow}
+            setSelectedRow={setSelectedRow} // ✅ Add this
             participants={participants}
             handleSelectuserrow={(i) => handleSelectuserrow(i)}
           />
@@ -137,16 +155,16 @@ export default function GlobalModal({
               zIndex: 9,
               position: "absolute",
               bottom: 100,
-              right: 50,
-              backgroundColor: "#08312A",
+              left: 50,
+              backgroundColor: "#0035E6",
               padding: 20,
-              borderRadius: 1000, // optional, makes it circular
-              elevation: 5, // for Android shadow
-              shadowColor: "#000", // for iOS shadow
+              borderRadius: 1000,
+              elevation: 5,
+              shadowColor: "#000",
             }}
-            onPress={() => onPress(!modalStatus)}
+            onPress={refreshParticipants}
           >
-            <MaterialCommunityIcons name="close" size={24} color="#ffffff" />
+            <MaterialCommunityIcons name="refresh" size={24} color="#ffffff" />
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

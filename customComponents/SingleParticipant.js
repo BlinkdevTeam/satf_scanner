@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function SingleParticipant({ user }) {
+export default function SingleParticipant({ user, onClose }) {
   const formatTime = (value) => {
     return value
       ? new Date(value).toLocaleTimeString([], {
@@ -19,14 +20,19 @@ export default function SingleParticipant({ user }) {
 
   return (
     <View style={styles.container}>
+      {/* Close Button */}
+      <Pressable style={styles.closeBtn} onPress={onClose}>
+        <MaterialCommunityIcons name="close" size={20} color="#fff" />
+      </Pressable>
+
       {renderRow("Name:", `${user.first_name} ${user.last_name}`)}
       {renderRow("Email:", user.email)}
       {renderRow(
         "Date Registered:",
         new Date(user.created_at).toLocaleDateString()
       )}
-      {renderRow("Time In:", formatTime(user.formatted_timein))}
-      {renderRow("Time Out:", formatTime(user.formatted_timeout))}
+      {renderRow("Time In:", user.formatted_timein)}
+      {renderRow("Time Out:", user.formatted_timeout)}
     </View>
   );
 }
@@ -36,7 +42,17 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "flex-start",
     gap: 8,
-    backgroundColor: "#dddddd",
+    backgroundColor: "#00072C",
+    borderRadius: 12,
+    padding: 12,
+    position: "relative",
+  },
+  closeBtn: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    padding: 6,
+    zIndex: 1,
   },
   infoBlock: {
     flexDirection: "column",
