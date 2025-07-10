@@ -52,19 +52,19 @@ export default function SearchTemplate(props) {
                           { textTransform: "uppercase", fontWeight: "700" },
                         ]}
                       >
-                        {i.first_name} {i.last_name}
+                        {i.full_name_upper}
                       </Text>
                       <Text style={styles.text}>{i.email}</Text>
                     </View>
                     <View style={styles.logs}>
                       <View style={{ flex: 1 }}>
                         <Text style={styles.text}>
-                          In: {i.formatted_timein}
+                          Time In: {i.formatted_timein}
                         </Text>
                       </View>
                       <View style={{ flex: 1 }}>
                         <Text style={styles.text}>
-                          Out: {i.formatted_timeout}
+                          Time Out: {i.formatted_timeout}
                         </Text>
                       </View>
                     </View>

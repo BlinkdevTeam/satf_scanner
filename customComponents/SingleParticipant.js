@@ -25,7 +25,7 @@ export default function SingleParticipant({ user, onClose }) {
         <MaterialCommunityIcons name="close" size={20} color="#fff" />
       </Pressable>
 
-      {renderRow("Name:", `${user.first_name} ${user.last_name}`)}
+      {renderRow("Name:", `${user.full_name_upper}`)}
       {renderRow("Email:", user.email)}
       {renderRow(
         "Date Registered:",

@@ -18,9 +18,9 @@ export default function LandscapeTHeader({ screen }) {
 
       <View
         style={{
-          flexDirection: screen === "home" ? "column" : "row",
+          flexDirection: screen === "home" ? "column" : "column",
           justifyContent: screen === "home" ? "space-between" : "center",
-          width: screen === "home" ? "100%" : "80%",
+          width: screen === "home" ? "100%" : "100%",
           alignItems: "center",
           gap: 0,
           backgroundColor: "transparent", // ✅ keep everything transparent
@@ -40,7 +40,7 @@ export default function LandscapeTHeader({ screen }) {
           style={{
             fontFamily: "MonosansSemiBoldItalic",
             fontSize: 30,
-            marginTop: 50,
+            marginTop: screen === "home" ? 0 : 10,
             color: "#fff",
           }}
         >

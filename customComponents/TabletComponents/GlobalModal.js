@@ -38,21 +38,32 @@ export default function GlobalModal({
   const { width, height } = useWindowDimensions();
 
   useEffect(() => {
-    (async () => {
-      const { data, error } = await supabase
-        .from("sat_forum_registrations")
-        .select("*")
-        .not("latest_time", "is", null) // exclude rows where time_in is null
-        .order("latest_time", { ascending: false })
-        .limit(limit);
+    const fetchParticipants = async () => {
+      const [res17, res24] = await Promise.all([
+        supabase
+          .from("satf_participant_onsite_17")
+          .select("*")
+          .not("latest_timein", "is", null),
+        supabase
+          .from("satf_participant_onsite_24")
+          .select("*")
+          .not("latest_timein", "is", null),
+      ]);
 
-      if (error || !data) {
-        console.error("Fetch error:", error);
+      if (res17.error || res24.error) {
+        console.error("Fetch error:", res17.error || res24.error);
         return;
       }
 
-      setParticipants(data);
-    })();
+      const combined = [...res17.data, ...res24.data].sort(
+        (a, b) =>
+          new Date(b.latest_timein ?? 0) - new Date(a.latest_timein ?? 0)
+      );
+
+      setParticipants(combined.slice(0, limit));
+    };
+
+    fetchParticipants();
   }, []);
 
   const handleSelectuserrow = (i) => {
@@ -81,12 +92,54 @@ export default function GlobalModal({
 
       if (trimmed === "") {
         // If input is empty, reset to recent logins
-        const { data, error } = await supabase
-          .from("sat_forum_registrations")
-          .select("*")
-          .not("latest_time", "is", null)
-          .order("latest_time", { ascending: false })
-          .limit(limit);
+        const fetchParticipants = async () => {
+          const [res17, res24] = await Promise.all([
+            supabase
+              .from("satf_participant_onsite_17")
+              .select("*")
+              .not("latest_timein", "is", null),
+            supabase
+              .from("satf_participant_onsite_24")
+              .select("*")
+              .not("latest_timein", "is", null),
+          ]);
+
+          if (res17.error || res24.error) {
+            console.error("Fetch error:", res17.error || res24.error);
+            return;
+          }
+
+          const combined = [...res17.data, ...res24.data].sort(
+            (a, b) => new Date(b.latest_timein) - new Date(a.latest_timein)
+          );
+
+          setParticipants(combined.slice(0, limit));
+        };
+
+        if (trimmed === "") {
+          const [res17, res24] = await Promise.all([
+            supabase
+              .from("satf_participant_onsite_17")
+              .select("*")
+              .not("latest_timein", "is", null),
+            supabase
+              .from("satf_participant_onsite_24")
+              .select("*")
+              .not("latest_timein", "is", null),
+          ]);
+
+          if (res17.error || res24.error) {
+            console.error("Reset fetch error:", res17.error || res24.error);
+          } else {
+            const combined = [...res17.data, ...res24.data].sort(
+              (a, b) =>
+                new Date(b.latest_timein ?? 0) - new Date(a.latest_timein ?? 0)
+            );
+            setParticipants(combined.slice(0, limit));
+          }
+
+          return;
+        }
 
         if (error) {
           console.error("Reset fetch error:", error.message);
@@ -97,12 +150,30 @@ export default function GlobalModal({
         return; // ⛔ skip the search logic
       }
 
-      const { data, error } = await supabase
-        .from("sat_forum_registrations")
-        .select("*")
-        .or(
-          `first_name.ilike.%${trimmed}%,last_name.ilike.%${trimmed}%,email.ilike.%${trimmed}%`
+      const [res17, res24] = await Promise.all([
+        supabase
+          .from("satf_participant_onsite_17")
+          .select("*")
+          .or(
+            `first_name.ilike.%${trimmed}%,last_name.ilike.%${trimmed}%,email.ilike.%${trimmed}%`
+          ),
+        supabase
+          .from("satf_participant_onsite_24")
+          .select("*")
+          .or(
+            `first_name.ilike.%${trimmed}%,last_name.ilike.%${trimmed}%,email.ilike.%${trimmed}%`
+          ),
+      ]);
+
+      if (res17.error || res24.error) {
+        console.error("Search error:", res17.error || res24.error);
+      } else {
+        const combined = [...res17.data, ...res24.data].sort(
+          (a, b) =>
+            new Date(b.latest_timein ?? 0) - new Date(a.latest_timein ?? 0)
         );
+        setParticipants(combined.slice(0, limit));
+      }
 
       if (error) {
         console.error("Search error:", error.message);
@@ -115,19 +186,27 @@ export default function GlobalModal({
   }, [debouncedSearchTerm]);
 
   const refreshParticipants = async () => {
-    const { data, error } = await supabase
-      .from("sat_forum_registrations")
-      .select("*")
-      .not("latest_time", "is", null)
-      .order("latest_time", { ascending: false })
-      .limit(limit);
+    const [res17, res24] = await Promise.all([
+      supabase
+        .from("satf_participant_onsite_17")
+        .select("*")
+        .not("latest_timein", "is", null),
+      supabase
+        .from("satf_participant_onsite_24")
+        .select("*")
+        .not("latest_timein", "is", null),
+    ]);
 
-    if (error) {
-      console.error("Refresh error:", error.message);
+    if (res17.error || res24.error) {
+      console.error("Refresh error:", res17.error || res24.error);
     } else {
-      setParticipants(data);
-      setSearchTerm(""); // optional: clear search input
-      setSelectedRow([]); // optional: clear selected user
+      const combined = [...res17.data, ...res24.data].sort(
+        (a, b) =>
+          new Date(b.latest_timein ?? 0) - new Date(a.latest_timein ?? 0)
+      );
+      setParticipants(combined.slice(0, limit));
+      setSearchTerm("");
+      setSelectedRow([]);
     }
   };
 
